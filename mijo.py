@@ -1,12 +1,18 @@
 import time
 import json
 import requests
+import uuid
+import random
+
+def get_mijo_message():
+  uid = uuid.uuid4().hex
+  mijo_message = "¡Hola!\n ¿Quieres ofrecer o necesitas lentes certificados para el eclipse solar para tus huéspedes?\n Compra con el cupón descuento AIRBNBPREV en http://host.miraeleclipse.cl/\n Mira nuestra oferta comercial completa en: https://drive.google.com/file/d/1_u7vhtU7HO6dVinTYJDgtM96u-2ZfRB4/view?usp=sharing&hash={}\n ¡Despachamos en La Araucanía y Los Ríos!"
+  mijo_message = mijo_message.format(uid)
+  return mijo_message
 
 def send_mijo_message_to(listing_id):
   user_id = 55975833
   url_key = "d306zoyjsyarp7ifhu67rjxn52tv0t20"
-  mijo_message = "¡Hola!\n ¿Quieres ofrecer o necesitas lentes certificados para el eclipse solar para tus huéspedes?\n Compra con el cupón descuento AIRBNBPREV en http://host.miraeleclipse.cl/\n Mira nuestra oferta comercial completa en: https://drive.google.com/file/d/1_u7vhtU7HO6dVinTYJDgtM96u-2ZfRB4/view?usp=sharing\n ¡Despachamos en La Araucanía y Los Ríos!"
-
   url = "https://www.airbnb.cl/api/v2/threads?_format=for_contact_host_standalone&currency=CLP&key={}&locale=es-X L".format(url_key)
   payload = {
       "user_id": user_id,
@@ -16,7 +22,7 @@ def send_mijo_message_to(listing_id):
       "number_of_infants": 0,
       "checkin_date": "2021-03-11",
       "checkout_date": "2021-03-17",
-      "message": mijo_message,
+      "message": get_mijo_message(),
       "is_open_homes": False
   }
 
@@ -53,7 +59,8 @@ listings = [5927376, 62519809, 225564800, 119987488, 156386381, 235704643, 22771
 listings = [5927376, 62519809, 225564800]
 
 for listing_id in listings:
+  time_to_send = random.uniform(60 * 2, 60 * 5)
   send_mijo_message_to(listing_id)
-  time.sleep(2)
+  time.sleep(time_to_send)
 
 
